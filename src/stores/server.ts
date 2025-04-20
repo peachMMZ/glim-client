@@ -4,7 +4,20 @@ import { ref, computed } from 'vue'
 export const useServerStore = defineStore('server', () => {
 
   const serverAddress = ref<string | null>(null)
-  const baseUrl = computed(() => serverAddress.value ? `${serverAddress.value}/api` : null)
+  const apiBaseUrl = computed(() => {
+    if (import.meta.env.DEV) {
+      return '/api'
+    } else {
+      return serverAddress.value ? `${serverAddress.value}/api` : null
+    }
+  })
+  const wsBaseUrl = computed(() => {
+    if (import.meta.env.DEV) {
+      return '/ws'
+    } else {
+      return serverAddress.value ? `${serverAddress.value.replace('http', 'ws')}/ws` : null
+    }
+  })
 
   const init = async () => {
     const address = window.location.href.replace(/\/$/, '')
@@ -18,7 +31,8 @@ export const useServerStore = defineStore('server', () => {
 
   return {
     serverAddress,
-    baseUrl,
+    apiBaseUrl,
+    wsBaseUrl,
     init
   }
 })

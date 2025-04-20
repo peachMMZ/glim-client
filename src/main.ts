@@ -1,14 +1,44 @@
-import { createApp } from 'vue'
+import { createApp, type App } from 'vue'
 import { createPinia } from 'pinia'
 
-import App from './App.vue'
+import AppComponent from './App.vue'
 import router from './router'
 import 'virtual:uno.css'
 import 'vfonts/FiraCode.css'
+import { webSocketService } from './services/websocket'
+import { useServerStore } from '@/stores/server'
 
-const app = createApp(App)
+async function setupPinia(app: App) {
+  const pinia = createPinia()
+  app.use(pinia)
+}
 
-app.use(createPinia())
-app.use(router)
+async function setupRouter(app: App) {
+  app.use(router)
+}
 
-app.mount('#app')
+function setupWebSocket() {
+  webSocketService.init()
+}
+
+async function setupStore() {
+  const serverStore = useServerStore()
+  await serverStore.init()
+}
+
+async function main() {
+  const startTime = Date.now()
+
+  const app = createApp(AppComponent)
+
+  await setupPinia(app)
+  await setupRouter(app)
+  await setupStore()
+  setupWebSocket()
+
+  app.mount('#app')
+
+  console.log(`App started in ${Date.now() - startTime}ms`)
+}
+
+main()

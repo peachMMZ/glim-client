@@ -1,5 +1,5 @@
 <template>
-  <NConfigProvider :locale="zhCN">
+  <NConfigProvider :locale="zhCN" :theme-overrides="themeOverride">
     <NMessageProvider>
       <RouterView />
     </NMessageProvider>
@@ -7,19 +7,22 @@
 </template>
 
 <script setup lang="ts">
-import { onMounted } from 'vue'
 import {
   NConfigProvider,
   NMessageProvider,
-  zhCN
+  zhCN,
+  type GlobalThemeOverrides
 } from 'naive-ui'
-import { useServerStore } from '@/stores/server'
 
-const serverStore = useServerStore()
-
-onMounted(() => {
-  serverStore.init()
-})
+const themeOverride: GlobalThemeOverrides = {
+  common: {
+    primaryColor: '#6366F1',
+    primaryColorHover: '#4F46E5',
+    primaryColorPressed: '#828AF5FF',
+    primaryColorSuppl: '#4F46E5',
+    fontSize: '14px',
+    fontWeight: '400',
+  }
+}
 </script>
-
 <style></style>
