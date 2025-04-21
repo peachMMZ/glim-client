@@ -20,7 +20,7 @@ jobs:
           cache: 'yarn' # 使用 Yarn 专用缓存
 
       - name: Install dependencies
-        run: yarn install --frozen-lockfile # Yarn 的确定性安装
+        run: yarn install
 
       - name: Build project
         run: yarn build
