@@ -33,8 +33,6 @@ jobs:
       - name: Create Release
         uses: softprops/action-gh-release@v1
         with:
-          name: Release ${GITHUB_REF#refs/tags/}
-          tag_name: ${GITHUB_REF#refs/tags/}
           files: |
             release-dist-*.zip
         env:
