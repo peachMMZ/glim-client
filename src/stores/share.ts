@@ -15,9 +15,16 @@ export const useShareStore = defineStore('share', () => {
   const messageList = ref<ShareMessage[]>([])
 
   const onWsRecv = (event: MessageEvent) => {
-    switch(event.type) {
+    switch (event.type) {
       case 'message':
-        const data: string = event.data
+        let data: string = event.data
+        if (import.meta.env.DEV) {
+          // 替换ip为localhost
+          data = data.replace(
+            /http:\/\/[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}/,
+            'http://localhost',
+          )
+        }
         messageList.value.push({
           text: data,
           timestamp: Date.now(),
@@ -53,6 +60,6 @@ export const useShareStore = defineStore('share', () => {
   return {
     messageList,
     onWsRecv,
-    send
+    send,
   }
 })

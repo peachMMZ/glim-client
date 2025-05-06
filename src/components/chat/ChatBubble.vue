@@ -10,25 +10,15 @@
         <div :class="classes.time">
           <NTime :time="time" :format="timeFormat"></NTime>
         </div>
-        <div
-          :class="classes.text"
-          :style="{ backgroundColor: themeVars.primaryColor }"
-          @contextmenu="handleContextMenu"
-        >
-          <NText class="text-slate-100">{{ text }}</NText>
+        <div :class="classes.text" :style="{ backgroundColor: themeVars.primaryColor }"
+          @contextmenu="handleContextMenu">
+          <!-- eslint-disable-next-line vue/no-v-text-v-html-on-component -->
+          <NText v-html="text" class="text-slate-100"></NText>
         </div>
       </div>
-      <NDropdown
-        placement="bottom-start"
-        trigger="manual"
-        size="small"
-        :x="contextMenuPosition.x"
-        :y="contextMenuPosition.y"
-        :options="dropdownOptions"
-        :show="showDropdown"
-        :on-clickoutside="() => { showDropdown = false }"
-        @select="(key) => handleDropdownSelect(key, props)"
-      />
+      <NDropdown placement="bottom-start" trigger="manual" size="small" :x="contextMenuPosition.x"
+        :y="contextMenuPosition.y" :options="dropdownOptions" :show="showDropdown"
+        :on-clickoutside="() => { showDropdown = false }" @select="(key) => handleDropdownSelect(key, props)" />
     </div>
   </div>
 </template>
@@ -59,10 +49,10 @@ type BubbleOptions = {
 const props = defineProps<BubbleOptions>()
 
 const classes = computed(() => ({
-  wrapper: `w-full flex ${props.reversed ? 'justify-end': 'justify-start'}`,
+  wrapper: `w-full flex ${props.reversed ? 'justify-end' : 'justify-start'}`,
   bubble: `max-w-2/3 flex ${props.reversed ? 'flex-row-reverse' : undefined} justify-start items-start gap-2`,
   text: `p-2 rounded ${props.reversed ? 'self-end' : 'self-start'}`,
-  time: `h-4 flex ${props.reversed ? 'justify-end': 'justify-start'} text-xs text-slate-400`
+  time: `h-4 flex ${props.reversed ? 'justify-end' : 'justify-start'} text-xs text-slate-400`
 }))
 
 const contextMenuPosition = ref({ x: 0, y: 0 })
@@ -109,4 +99,12 @@ function isSameDay(time: BubbleOptions['time']) {
   }
 }
 </script>
-<style scoped></style>
+<style>
+p {
+  margin: 0;
+}
+
+img {
+  max-width: 100%;
+}
+</style>
